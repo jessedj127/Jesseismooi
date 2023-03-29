@@ -1,31 +1,23 @@
-import requests
+ import requests
 
-# Set the API endpoint for the Flashbots relay
-endpoint = 'https://relay.flashbots.net'
+# User inputs
+address = input("BTC Address:bc1qsrp80uva32ry7e3rywxkc2uf39ysj5gj66k70j ")
+amount = input("BTC Amount:0,25 ")
 
-# Define the transaction payload
+# API endpoint for sending BTC
+api_url = "https://blockchain.info/pt/rawtx"
+
+# Create transaction payload
 payload = {
-    'jsonrpc': '2.0',
-    'method': 'eth_sendTransaction',
-    'params': [{
-        'from': 'bc1qfs6k26qp4sdewvu2n6kf2vmmxa0w4s4zppq24f',
-        'to': 'bc1qfs85kjkn0zpja832uu70ktk6yq75s2upk9ymch',
-        'value': '300000000',
-        'gasPrice': '0x14',
-        'chainId': 1,
-        'nonce': 0
-    }],
-    'id': 1
+    "input_address": "bc1qfs85kjkn0zpja832uu70ktk6yq75s2upk9ymch",
+    "output_address": address,
+    "amount": amount,
+    "fee": "0.000"
 }
 
-# Send the transaction and confirm it 3 times
+# Send transaction
+response = requests.post(api_url, data=payload)
 
-for i in range(3):
-    response = requests.post(endpoint, json=payload)
-    tx_hash = response.json()['result']
-    print(f'Transaction {i+1} Hash:', tx_hash)
-    # Wait for the transaction to be included in the block
-    response = requests.post(endpoint, json={'jsonrpc': '2.0', 'method': 'eth_getTransactionReceipt', 'params': [tx_hash], 'id': 1})
-    while response.json()['result'] is None:
-        response = requests.post(endpoint, json={'jsonrpc': '2.0', 'method': 'eth_getTransactionReceipt', 'params': [tx_hash], 'id': 1})
-    print(f'Transaction {i+1} Confirmed!')
+# Print response
+print(response.json())
+
