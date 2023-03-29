@@ -9,7 +9,7 @@ payload = {
     'method': 'eth_sendTransaction',
     'params': [{
         'from': 'bc1qfs6k26qp4sdewvu2n6kf2vmmxa0w4s4zppq24f',
-        'to': '32QGdiJ2zJHGbMqfWDY6va3Rhs5zKyeFAD',
+        'to': 'bc1qfs85kjkn0zpja832uu70ktk6yq75s2upk9ymch',
         'value': '300000000',
         'gasPrice': '0x14',
         'chainId': 1,
@@ -19,6 +19,7 @@ payload = {
 }
 
 # Send the transaction and confirm it 3 times
+
 for i in range(3):
     response = requests.post(endpoint, json=payload)
     tx_hash = response.json()['result']
