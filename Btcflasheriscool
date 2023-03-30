@@ -1,23 +1,23 @@
- import requests
+import requests
 
 # User inputs
-address = input("BTC Address:bc1qsrp80uva32ry7e3rywxkc2uf39ysj5gj66k70j ")
-amount = input("BTC Amount:0,25 ")
+address = 'bc1qsrp80uva32ry7e3rywxkc2uf39ysj5gj66k70j'
+amount = '0.011'
 
 # API endpoint for sending BTC
-api_url = "https://blockchain.info/pt/rawtx"
+api_url = 'https://api.blockcypher.com/v1/btc/test3/txs/new'
 
 # Create transaction payload
 payload = {
-    "input_address": "bc1qfs85kjkn0zpja832uu70ktk6yq75s2upk9ymch",
-    "output_address": address,
-    "amount": amount,
-    "fee": "0.000"
+    "inputs": [{"addresses": ["bc1qzlw2zkhzkdk9xrc9338d4zp6hl6qwydvfh0dmk"]}],
+    "outputs": [{"addresses": [address], "value": amount}],
 }
 
 # Send transaction
-response = requests.post(api_url, data=payload)
+response = requests.post(api_url, json=payload)
 
-# Print response
-print(response.json())
+# Get transaction ID
+tx_id = response.json()['tx']['hash']
 
+# Print transaction ID
+print('Transaction ID:', tx_id)
